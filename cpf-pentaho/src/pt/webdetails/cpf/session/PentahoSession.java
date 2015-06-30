@@ -34,7 +34,11 @@ public class PentahoSession implements IUserSession {
     public String getUserName() {
         return userSession.getName();
     }
-    
+
+    @Override
+    public boolean isAuthenticated() {
+      return userSession != null && userSession.isAuthenticated();
+    }
     
     @Override
     public boolean isAdministrator() {

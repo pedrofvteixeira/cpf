@@ -23,16 +23,28 @@ public class SimpleUserSession implements IUserSession {
 	private String userName;
 	private String[] authorities;
 	private boolean isAdministrator;
+	private boolean isAuthenticated = true; // default
 	private Map<String, Object> attributes = new HashMap<String, Object>();
 
 	public SimpleUserSession(
-			String username, 
-			String[] authorities, 
-			boolean isAdministrator, 
-			Map<String,Object> attributes) 
+			String username,
+			String[] authorities,
+			boolean isAdministrator,
+			Map<String,Object> attributes)
+	{
+		this( username, authorities, true /* default isAuthenticated */, isAdministrator, attributes );
+	}
+
+	public SimpleUserSession(
+			String username,
+			String[] authorities,
+			boolean isAuthenticated,
+			boolean isAdministrator,
+			Map<String,Object> attributes)
 	{
 		this.userName = username;
 		this.authorities = authorities;
+		this.isAuthenticated = isAuthenticated;
 		this.isAdministrator = isAdministrator;
 		if (attributes != null) {
 			this.attributes .putAll(attributes);
@@ -45,6 +57,11 @@ public class SimpleUserSession implements IUserSession {
 	@Override
 	public String getUserName() {
 		return userName;
+	}
+
+	@Override
+	public boolean isAuthenticated() {
+		return isAuthenticated;
 	}
 
 	@Override

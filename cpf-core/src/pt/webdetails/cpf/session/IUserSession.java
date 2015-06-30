@@ -22,6 +22,7 @@ public interface IUserSession {
     
     public String getUserName();
     public boolean isAdministrator();
+    public boolean isAuthenticated();
     public String[] getAuthorities();
     
     public Object getParameter(String key);

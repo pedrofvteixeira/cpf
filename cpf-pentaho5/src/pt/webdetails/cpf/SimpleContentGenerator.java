@@ -36,7 +36,7 @@ import org.pentaho.platform.api.repository.IContentItem;
 import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 import org.pentaho.platform.engine.security.SecurityHelper;
 import org.pentaho.platform.engine.services.solution.BaseContentGenerator;
-import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
 import pt.webdetails.cpf.annotations.AccessLevel;
 import pt.webdetails.cpf.annotations.Audited;
@@ -44,6 +44,7 @@ import pt.webdetails.cpf.annotations.Exposed;
 import pt.webdetails.cpf.audit.CpfAuditHelper;
 import pt.webdetails.cpf.messaging.JsonSerializable;
 //import pt.webdetails.cpf.repository.PentahoRepositoryAccess;
+import pt.webdetails.cpf.session.PentahoSession;
 import pt.webdetails.cpf.utils.CharsetHelper;
 
 /**
@@ -317,12 +318,12 @@ public abstract class SimpleContentGenerator extends BaseContentGenerator {
           boolean accessible = false;
           switch (accessLevel) {
             case ADMIN:
-              accessible = SecurityHelper.getInstance().isPentahoAdministrator(PentahoSessionHolder.getSession());
+              accessible = new PentahoSession().isAdministrator();
               break;
             case ROLE:
               String role = exposed.role();
               if (!StringUtils.isEmpty(role)) {
-                accessible = SecurityHelper.getInstance().isGranted(PentahoSessionHolder.getSession(), new GrantedAuthorityImpl(role));
+                accessible = SecurityHelper.getInstance().isGranted( new GrantedAuthorityImpl(role) );
               }
               break;
             case PUBLIC:
